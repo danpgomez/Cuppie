@@ -3,10 +3,7 @@ package com.e.cuppie
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,50 +17,56 @@ import com.google.android.gms.maps.model.MarkerOptions
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
+    private val mapFragment: SupportMapFragment
+        get() = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        checkIfPermissionGranted()
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-    }
 
-
-
-    @SuppressLint("NewApi")
-    private fun checkIfPermissionGranted() {
-        when {
-            ContextCompat.checkSelfPermission(
-                baseContext,
-                FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                // Permission was granted here so now we can get
-                // users location and pass it to the map
-                Toast.makeText(
-                    this,
-                    "Yay! 🙌 location permission granted!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            shouldShowRequestPermissionRationale(FINE_LOCATION) -> {
-                Toast.makeText(
-                    this,
-                    "Cuppie needs your location to show you places nearby.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            else -> {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(FINE_LOCATION),
-                    LOCATION_REQUEST_CODE
-                )
+        requestLocationPermissionIfNeeded()
+        mapFragment.getMapAsync {
+            with(it) {
+                enableLocationIfAllowed()
             }
         }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == LOCATION_REQUEST_CODE && grantResults.isNotEmpty()
+            && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        ) {
+            mapFragment.getMapAsync { it.enableLocationIfAllowed() }
+        }
+    }
+
+    private fun requestLocationPermissionIfNeeded() {
+        if (!isLocationPermissionGranted()) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(FINE_LOCATION),
+                LOCATION_REQUEST_CODE
+            )
+        }
+    }
+
+    private fun isLocationPermissionGranted(): Boolean =
+        ContextCompat.checkSelfPermission(
+            baseContext,
+            FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+    @SuppressLint("MissingPermission")
+    private fun GoogleMap.enableLocationIfAllowed() {
+        if (isLocationPermissionGranted()) {
+            isMyLocationEnabled = true
+        }
+    }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
