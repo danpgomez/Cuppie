@@ -53,8 +53,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
                     getNearbyPlaces(location, this)
                 }
-//                TODO: 😀 Add code to add map markers here
-                addPlacesToMap(this)
             }
         }
     }
@@ -163,6 +161,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         private const val ZOOM_LEVEL = 13F
         private const val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
         private const val LOCATION_REQUEST_CODE = 1
+    }
+
+    override fun onMapReady(p0: GoogleMap) {
+        TODO("Not yet implemented")
     }
 }
 
