@@ -6,7 +6,7 @@ data class Place(
     val id: String,
     val icon: String,
     val name: String,
-    val latLng: LatLng,
+    val geometry: Geometry,
 ) {
     override fun equals(other: Any?): Boolean {
        if (other !is Place) {
@@ -18,4 +18,16 @@ data class Place(
     override fun hashCode(): Int {
         return this.id.hashCode()
     }
+}
+
+data class Geometry(
+    val location: GeometryLocation
+)
+
+data class GeometryLocation(
+    val lat: Double,
+    val lng: Double
+) {
+    val latLng: LatLng
+        get() = LatLng(lat, lng)
 }

@@ -51,9 +51,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 getCurrentLocation { location ->
                     val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
                     it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
-                    getNearbyPlaces(location)
-                    addPlacesToMap(it)
+                    getNearbyPlaces(location, this)
                 }
+//                TODO: 😀 Add code to add map markers here
+                addPlacesToMap(this)
             }
         }
     }
@@ -71,8 +72,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 getCurrentLocation { location ->
                     val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
                     it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
-                    getNearbyPlaces(location)
-                    addPlacesToMap(it)
                 }
             }
         }
@@ -111,7 +110,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun getNearbyPlaces(location: Location) {
+    private fun getNearbyPlaces(location: Location, map: GoogleMap) {
         placesService.nearbyPlaces(
             apiKey = BuildConfig.API_KEY,
             location = "${location.latitude}, ${location.longitude}",
@@ -130,8 +129,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     if (!response.isSuccessful) {
                         Log.e(LOG_TAG, "Failed to get nearby places")
                     }
-                    val places = response.body()?.results ?: emptyList()
-                    this@MapsActivity.places = places
+                    val nearbyPlaces = response.body()?.results ?: emptyList()
+                    places = nearbyPlaces
+                    addPlacesToMap(map)
                 }
             }
         )
@@ -142,26 +142,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             Log.e(LOG_TAG, "Location has not been determined yet")
         }
 
+        val places = places
         places?.let { places ->
             for (place in places) {
                 googleMap.let {
                     val marker = it.addMarker(
                         MarkerOptions()
-                            .position(place.latLng)
+                            .position(place.geometry.location.latLng)
                             .title(place.name)
                     )
                     marker?.tag = place
-                    markers.add(marker)
+                    marker?.let { marker -> markers.add(marker) }
                 }
             }
         }
-    }
-
-
-    // TODO: this function does not seem to be getting called at all
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        addPlacesToMap(map)
     }
 
     companion object {
