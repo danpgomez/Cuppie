@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.e.cuppie.api.NearbyPlacesResponse
 import com.e.cuppie.api.PlacesService
+import com.e.cuppie.detail.PlaceDetailsFragment
 import com.e.cuppie.model.Place
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -36,6 +37,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var placesService: PlacesService
     private var places: List<Place>? = null
     private var markers: MutableList<Marker> = emptyList<Marker>().toMutableList()
+    private lateinit var detailsFragment: PlaceDetailsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
                     getNearbyPlaces(location, this)
                 }
+                addClickListenersToMarkers(this)
             }
         }
     }
@@ -153,6 +156,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     marker?.let { marker -> markers.add(marker) }
                 }
             }
+        }
+    }
+
+    private fun addClickListenersToMarkers(googleMap: GoogleMap) {
+        googleMap.setOnMarkerClickListener {
+            detailsFragment = PlaceDetailsFragment()
+            detailsFragment.show(supportFragmentManager, "Place Details Fragment")
+            return@setOnMarkerClickListener true
         }
     }
 
