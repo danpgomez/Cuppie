@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "990494334749",
+    "project_id": "cuppie-dpg366",
+    "storage_bucket": "cuppie-dpg366.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990494334749:android:eb9e6e093e71762d0e8bf4",
+        "android_client_info": {
+          "package_name": "com.e.cuppie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990494334749-dseebpulmft8u8jucf3k2rr90dfgdbkc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.e.cuppie",
+            "certificate_hash": "368d9a9890cf731131b34ee279ca443da73f8402"
+          }
+        },
+        {
+          "client_id": "990494334749-ajeal2cvoq181ag55pfg2rii60gurl3k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApkitw8FFTQf7YX-mIH5RHJSaPEcP8YpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990494334749-ajeal2cvoq181ag55pfg2rii60gurl3k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

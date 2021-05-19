@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.secrets_gradle_plugin' version '0.6'
+    id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs'
 }
 
 def localProperties = new Properties()
@@ -17,7 +19,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -68,6 +70,19 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Multi-dex support
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'
