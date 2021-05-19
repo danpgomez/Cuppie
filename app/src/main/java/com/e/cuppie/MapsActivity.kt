@@ -143,17 +143,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             Log.e(LOG_TAG, "Location has not been determined yet")
         }
 
-        val places = places
-        places?.let { places ->
-            for (place in places) {
-                googleMap.let {
-                    val marker = it.addMarker(
+        val placesList = places
+        placesList?.let { list ->
+            for (place in list) {
+                googleMap.let { map ->
+                    val marker = map.addMarker(
                         MarkerOptions()
                             .position(place.geometry.location.latLng)
                             .title(place.name)
                     )
                     marker?.tag = place
-                    marker?.let { marker -> markers.add(marker) }
+                    marker?.let { markers.add(it) }
                 }
             }
         }
@@ -161,7 +161,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun addClickListenersToMarkers(googleMap: GoogleMap) {
         googleMap.setOnMarkerClickListener {
-            detailsFragment = PlaceDetailsFragment()
+            detailsFragment = PlaceDetailsFragment(it.tag as Place)
             detailsFragment.show(supportFragmentManager, "Place Details Fragment")
             return@setOnMarkerClickListener true
         }
