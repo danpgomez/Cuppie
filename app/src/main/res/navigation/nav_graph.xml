@@ -7,6 +7,23 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.e.cuppie.map.MapFragment"
-        android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment_to_placeDetailsFragment"
+            app:destination="@id/placeDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeDetailsFragment"
+        android:name="com.e.cuppie.detail.PlaceDetailsFragment"
+        android:label="Place Details">
+        <argument
+            android:name="place"
+            app:argType="com.e.cuppie.model.Place" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.e.cuppie.favorites.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/favorites_fragment" />
 </navigation>

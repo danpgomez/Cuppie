@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
     id 'com.google.secrets_gradle_plugin' version '0.6'
     id 'com.google.gms.google-services'
     id 'androidx.navigation.safeargs'
@@ -83,6 +84,8 @@ dependencies {
 
     // Multi-dex support
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

@@ -7,16 +7,112 @@
     android:layout_height="match_parent"
     tools:context=".favorites.FavoritesFragment">
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/button_logIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is where favorites go"
-        android:textColor="@color/black"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/log_in_menu_title"
+        android:textColor="@color/white"
         android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+    <Button
+        android:id="@+id/button_signUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
+        app:layout_constraintTop_toTopOf="@+id/button_logIn" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:autofillHints="Password"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/editTextEmailAddress"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
+
+    <EditText
+        android:id="@+id/editTextEmailAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="420dp"
+        android:autofillHints="Email Address"
+        android:ems="10"
+        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_userGreeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_favorites0"
+        android:layout_width="271dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="72dp"
+        android:text="⭐️ Coperaco Café 777 S 3rd St, Harrison, NJ 07029"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView_favorites1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_favorites1"
+        android:layout_width="271dp"
+        android:layout_height="23dp"
+        android:text="⭐️ Ola Cafe 236 Hollywood Ave, Hillside, NJ 07205"
+        app:layout_constraintBottom_toTopOf="@+id/textView_favorites2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_favorites0"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView_favorites2"
+        android:layout_width="271dp"
+        android:layout_height="23dp"
+        android:text="⭐️ The Able Baker 187 Maplewood Ave, Maplewood, NJ 07040"
+        app:layout_constraintBottom_toTopOf="@+id/textView_favorites3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_favorites1"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView_favorites3"
+        android:layout_width="271dp"
+        android:layout_height="23dp"
+        android:layout_marginBottom="484dp"
+        android:text="⭐️ Village Coffee 164 Maplewood Ave, Maplewood, NJ 07040"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_favorites2"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
