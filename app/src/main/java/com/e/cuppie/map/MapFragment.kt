@@ -2,21 +2,22 @@ package com.e.cuppie.map
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.e.cuppie.BuildConfig
-import com.e.cuppie.MapsActivity
 import com.e.cuppie.R
 import com.e.cuppie.api.NearbyPlacesResponse
 import com.e.cuppie.api.PlacesService
+import com.e.cuppie.auth.FirebaseAuthUI
 import com.e.cuppie.model.Place
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -28,6 +29,8 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -66,7 +69,26 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 addClickListenersToMarkers(this)
             }
         }
+        setHasOptionsMenu(true)
         return rootView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.overflow_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.title == getString(R.string.log_in_menu_title)) {
+            val auth = Firebase.auth
+            if (auth.currentUser == null) {
+                startActivity(Intent(context, FirebaseAuthUI::class.java))
+            }
+        }
+        return NavigationUI.onNavDestinationSelected(
+            item,
+            requireView().findNavController()
+        ) or (super.onOptionsItemSelected(item))
     }
 
     override fun onRequestPermissionsResult(
@@ -176,19 +198,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun addClickListenersToMarkers(googleMap: GoogleMap) {
         googleMap.setOnMarkerClickListener {
-            MapsActivity().showDetailsFragment(it.tag as Place)
+            val directions =
+                MapFragmentDirections.actionMapFragmentToPlaceDetailsFragment(it.tag as Place)
+            view?.findNavController()?.navigate(directions)
             return@setOnMarkerClickListener true
         }
     }
 
     companion object {
-        private val LOG_TAG = MapsActivity::class.java.simpleName
+        private val LOG_TAG = this::class.java.simpleName
         private const val ZOOM_LEVEL = 13F
         private const val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
         private const val LOCATION_REQUEST_CODE = 1
     }
 
-    override fun onMapReady(p0: GoogleMap) {
+    override fun onMapReady(theMap: GoogleMap) {
         Log.i(LOG_TAG, "map is ready")
     }
 }

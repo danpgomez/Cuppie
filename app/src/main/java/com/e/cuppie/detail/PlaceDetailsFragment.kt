@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.e.cuppie.databinding.PlaceDetailsBinding
-import com.e.cuppie.model.Place
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class PlaceDetailsFragment(private val place: Place) : BottomSheetDialogFragment() {
+class PlaceDetailsFragment : Fragment() {
+    private val place by lazy {
+        PlaceDetailsFragmentArgs.fromBundle(requireArguments()).place
+    }
     private lateinit var placeDetailsViewModel: PlaceDetailsViewModel
 
     override fun onCreateView(
