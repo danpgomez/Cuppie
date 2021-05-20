@@ -71,7 +71,7 @@
         android:layout_height="23dp"
         android:layout_marginTop="72dp"
         android:text="⭐️ Coperaco Café 777 S 3rd St, Harrison, NJ 07029"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/textView_favorites1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -88,7 +88,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_favorites0"
-        tools:visibility="gone" />
+        tools:visibility="invisible" />
 
     <TextView
         android:id="@+id/textView_favorites2"
@@ -100,7 +100,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_favorites1"
-        tools:visibility="gone" />
+        tools:visibility="invisible" />
 
     <TextView
         android:id="@+id/textView_favorites3"
@@ -113,6 +113,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_favorites2"
-        tools:visibility="gone" />
+        tools:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

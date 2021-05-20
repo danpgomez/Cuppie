@@ -119,11 +119,6 @@ class FavoritesFragment : Fragment() {
             textViewFavorites2.visibility = View.VISIBLE
             textViewFavorites3.visibility = View.VISIBLE
         }
-        user.let {
-            val name = it?.displayName.toString()
-            val email = it?.email
-            val id = it?.uid
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

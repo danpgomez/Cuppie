@@ -213,8 +213,25 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(theMap: GoogleMap) {
-        Log.i(LOG_TAG, "map is ready")
     }
+
+    override fun onResume() {
+        super.onResume()
+        mapFragment.getMapAsync {
+            with(it) {
+                enableLocationIfAllowed()
+                getCurrentLocation { location ->
+                    val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
+                    it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
+                    getNearbyPlaces(location, this)
+                }
+                mMap = this
+                mapReady = true
+                addClickListenersToMarkers(this)
+            }
+        }
+    }
+
 }
 
 val Location.latLng: LatLng
