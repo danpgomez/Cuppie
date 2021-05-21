@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.e.cuppie.databinding.PlaceDetailsBinding
 
@@ -29,12 +30,11 @@ class PlaceDetailsFragment : Fragment() {
                 if (place.opening_hours.toString() == "OpeningHours(open_now=true)") "Open Now" else "Closed"
             businessStatusText.text =
                 if (place.business_status == "OPERATIONAL") "Operational" else "Permanently Closed "
+            favoritePlaceButton.setOnClickListener {
+                Toast.makeText(activity, "Added to favorites ❤️", Toast.LENGTH_SHORT).show()
+            }
         }
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
     }
 }

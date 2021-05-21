@@ -21,7 +21,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -31,7 +30,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment() {
     private lateinit var mMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
     private var mapReady = false
@@ -52,19 +51,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         requestLocationPermissionIfNeeded()
-        mapFragment.getMapAsync {
-            with(it) {
-                enableLocationIfAllowed()
-                getCurrentLocation { location ->
-                    val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
-                    it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
-                    getNearbyPlaces(location, this)
-                }
-                mMap = this
-                mapReady = true
-                addClickListenersToMarkers(this)
-            }
-        }
+        setUpMap()
         setHasOptionsMenu(true)
         return rootView
     }
@@ -195,18 +182,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    companion object {
-        private val LOG_TAG = this::class.java.simpleName
-        private const val ZOOM_LEVEL = 13F
-        private const val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
-        private const val LOCATION_REQUEST_CODE = 1
-    }
-
-    override fun onMapReady(theMap: GoogleMap) {
-    }
-
     override fun onResume() {
         super.onResume()
+        setUpMap()
+    }
+
+    private fun setUpMap() {
         mapFragment.getMapAsync {
             with(it) {
                 enableLocationIfAllowed()
@@ -222,6 +203,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    companion object {
+        private val LOG_TAG = this::class.java.simpleName
+        private const val ZOOM_LEVEL = 13F
+        private const val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
+        private const val LOCATION_REQUEST_CODE = 1
+    }
 }
 
 val Location.latLng: LatLng
