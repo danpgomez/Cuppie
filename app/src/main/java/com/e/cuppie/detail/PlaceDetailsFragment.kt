@@ -25,8 +25,10 @@ class PlaceDetailsFragment : Fragment() {
             placeName.text = place.name
             ratingText.text = place.rating.toString()
             vicinityText.text = place.vicinity
-            openNowText.text = place.business_status
-            businessStatusText.text = place.opening_hours?.toString() ?: "unknown"
+            openNowText.text =
+                if (place.opening_hours.toString() == "OpeningHours(open_now=true)") "Open Now" else "Closed"
+            businessStatusText.text =
+                if (place.business_status == "OPERATIONAL") "Operational" else "Permanently Closed "
         }
 
         return binding.root

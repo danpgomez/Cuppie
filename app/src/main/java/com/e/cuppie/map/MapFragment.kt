@@ -2,7 +2,6 @@ package com.e.cuppie.map
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -17,7 +16,6 @@ import com.e.cuppie.BuildConfig
 import com.e.cuppie.R
 import com.e.cuppie.api.NearbyPlacesResponse
 import com.e.cuppie.api.PlacesService
-import com.e.cuppie.auth.FirebaseAuthUI
 import com.e.cuppie.model.Place
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -29,8 +27,6 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,12 +75,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.title == getString(R.string.log_in_menu_title)) {
-            val auth = Firebase.auth
-            if (auth.currentUser == null) {
-                startActivity(Intent(context, FirebaseAuthUI::class.java))
-            }
-        }
         return NavigationUI.onNavDestinationSelected(
             item,
             requireView().findNavController()

@@ -112,7 +112,7 @@ class FavoritesFragment : Fragment() {
     private fun displayFavorites(user: FirebaseUser?) {
         with(binding) {
             textViewUserGreeting.text =
-                "Hello ${user?.email.toString()} 👋! Here are your favorite places:"
+                "Hello 👋! Here are your favorite places:"
             textViewUserGreeting.visibility = View.VISIBLE
             textViewFavorites0.visibility = View.VISIBLE
             textViewFavorites1.visibility = View.VISIBLE

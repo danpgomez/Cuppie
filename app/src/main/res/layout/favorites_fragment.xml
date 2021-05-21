@@ -23,7 +23,7 @@
         android:id="@+id/button_signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
+        android:text="@string/sign_up_button_label"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
@@ -36,6 +36,7 @@
         android:layout_marginTop="24dp"
         android:autofillHints="Password"
         android:ems="10"
+        android:hint="@string/password_hint"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/editTextEmailAddress"
         app:layout_constraintHorizontal_bias="0.0"
@@ -49,6 +50,7 @@
         android:layout_marginBottom="420dp"
         android:autofillHints="Email Address"
         android:ems="10"
+        android:hint="@string/your_email"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,8 +72,8 @@
         android:layout_width="271dp"
         android:layout_height="23dp"
         android:layout_marginTop="72dp"
-        android:text="⭐️ Coperaco Café 777 S 3rd St, Harrison, NJ 07029"
-        android:visibility="invisible"
+        android:text="@string/sample_address_1"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/textView_favorites1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -82,37 +84,37 @@
         android:id="@+id/textView_favorites1"
         android:layout_width="271dp"
         android:layout_height="23dp"
-        android:text="⭐️ Ola Cafe 236 Hollywood Ave, Hillside, NJ 07205"
+        android:text="@string/sample_address_2"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/textView_favorites2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_favorites0"
-        tools:visibility="invisible" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_favorites0" />
 
     <TextView
         android:id="@+id/textView_favorites2"
         android:layout_width="271dp"
         android:layout_height="23dp"
-        android:text="⭐️ The Able Baker 187 Maplewood Ave, Maplewood, NJ 07040"
+        android:text="@string/sample_address_3"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/textView_favorites3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_favorites1"
-        tools:visibility="invisible" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_favorites1" />
 
     <TextView
         android:id="@+id/textView_favorites3"
         android:layout_width="271dp"
         android:layout_height="23dp"
         android:layout_marginBottom="484dp"
-        android:text="⭐️ Village Coffee 164 Maplewood Ave, Maplewood, NJ 07040"
+        android:text="@string/sample_address_4"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_favorites2"
-        tools:visibility="invisible" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_favorites2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

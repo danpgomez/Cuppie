@@ -5,4 +5,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="favorites_title">Favorites</string>
     <string name="log_in_menu_title">Log In</string>
+    <string name="sign_up_button_label">Sign Up</string>
+    <string name="sample_address_1">⭐️ Coperaco Café 777 S 3rd St, Harrison, NJ 07029</string>
+    <string name="sample_address_2">⭐️ Ola Cafe 236 Hollywood Ave, Hillside, NJ 07205</string>
+    <string name="sample_address_3">⭐️ The Able Baker 187 Maplewood Ave, Maplewood, NJ 07040</string>
+    <string name="sample_address_4">⭐️ Village Coffee 164 Maplewood Ave, Maplewood, NJ 07040</string>
+    <string name="your_email">Email Address</string>
+    <string name="password_hint">Password</string>
+    <string name="place_title">Villa Cafe</string>
+    <string name="sample_rating">3.0</string>
+    <string name="sample_place_address">123 Mullberry Street, New York, NY 10014</string>
+    <string name="operational">Operational</string>
+    <string name="open_now">Open Now</string>
+    <string name="rating_label">Average Rating:</string>
+    <string name="address_label">Address:</string>
 </resources>
