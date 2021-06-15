@@ -50,7 +50,9 @@ class MapFragment : Fragment() {
         placesService = PlacesService.create()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
-        requestLocationPermissionIfNeeded()
+
+        requestLocationPermissionIfNeeded() // why am I calling this again?
+
         setUpMap()
         setHasOptionsMenu(true)
         return rootView
@@ -149,6 +151,16 @@ class MapFragment : Fragment() {
     }
 
     // Request Permissions
+//    val permissionLauncher =
+//        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted -> Boolean
+//            if (isGranted) {
+//                // Extract this into separate function?
+//            } else {
+//                // Show UI explaining to user that map places are unavailable because permission was not granted
+//            }
+//        }
+
+    // OLD Method
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -157,6 +169,7 @@ class MapFragment : Fragment() {
         if (requestCode == LOCATION_REQUEST_CODE && grantResults.isNotEmpty()
             && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
         ) {
+            // Move to registerForActivityResult > if(isGranted)
             mapFragment =
                 childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
             mapFragment.getMapAsync {
@@ -169,6 +182,7 @@ class MapFragment : Fragment() {
         }
     }
 
+    // OLD Method
     private fun requestLocationPermissionIfNeeded() {
         if (!isLocationPermissionGranted()) {
             activity?.let {
@@ -181,6 +195,7 @@ class MapFragment : Fragment() {
         }
     }
 
+    // OLD Method
     private fun isLocationPermissionGranted(): Boolean =
         context?.let {
             ContextCompat.checkSelfPermission(
@@ -189,6 +204,7 @@ class MapFragment : Fragment() {
             )
         } == PackageManager.PERMISSION_GRANTED
 
+    // OLD Method
     @SuppressLint("MissingPermission")
     private fun GoogleMap.enableLocationIfAllowed() {
         if (isLocationPermissionGranted()) {
@@ -196,6 +212,7 @@ class MapFragment : Fragment() {
         }
     }
 
+    // OLD Method
     @SuppressLint("MissingPermission")
     private fun getCurrentLocation(onSuccess: (Location) -> Unit) {
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
@@ -206,6 +223,7 @@ class MapFragment : Fragment() {
         }
     }
 
+    // end of permissions code. Remove this comment once clean
     companion object {
         private val LOG_TAG = this::class.java.simpleName
         private const val ZOOM_LEVEL = 13F
