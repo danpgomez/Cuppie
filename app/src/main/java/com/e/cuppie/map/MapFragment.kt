@@ -31,13 +31,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MapFragment : Fragment() {
-    private lateinit var mMap: GoogleMap
-    private lateinit var mapFragment: SupportMapFragment
     private var mapReady = false
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var mMap: GoogleMap
+    private var places: List<Place>? = null
     private var currentLocation: Location? = null
     private lateinit var placesService: PlacesService
-    private var places: List<Place>? = null
+    private lateinit var mapFragment: SupportMapFragment
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var markers: MutableList<Marker> = emptyList<Marker>().toMutableList()
 
     override fun onCreateView(
@@ -56,6 +56,7 @@ class MapFragment : Fragment() {
         return rootView
     }
 
+    // Overflow menu setup
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.overflow_menu, menu)
@@ -68,60 +69,20 @@ class MapFragment : Fragment() {
         ) or (super.onOptionsItemSelected(item))
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == LOCATION_REQUEST_CODE && grantResults.isNotEmpty()
-            && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        ) {
-            mapFragment =
-                childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
-            mapFragment.getMapAsync {
-                it.enableLocationIfAllowed()
+    // Map configuration
+    private fun setUpMap() {
+        mapFragment.getMapAsync {
+            with(it) {
+                enableLocationIfAllowed()
                 getCurrentLocation { location ->
                     val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
                     it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
+                    getNearbyPlaces(location, this)
                 }
+                mMap = this
+                mapReady = true
+                addClickListenersToMarkers(this)
             }
-        }
-    }
-
-    private fun requestLocationPermissionIfNeeded() {
-        if (!isLocationPermissionGranted()) {
-            activity?.let {
-                ActivityCompat.requestPermissions(
-                    it,
-                    arrayOf(FINE_LOCATION),
-                    LOCATION_REQUEST_CODE
-                )
-            }
-        }
-    }
-
-    private fun isLocationPermissionGranted(): Boolean =
-        context?.let {
-            ContextCompat.checkSelfPermission(
-                it,
-                FINE_LOCATION
-            )
-        } == PackageManager.PERMISSION_GRANTED
-
-    @SuppressLint("MissingPermission")
-    private fun GoogleMap.enableLocationIfAllowed() {
-        if (isLocationPermissionGranted()) {
-            isMyLocationEnabled = true
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun getCurrentLocation(onSuccess: (Location) -> Unit) {
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            currentLocation = location
-            onSuccess(location)
-        }.addOnFailureListener {
-            Log.e(LOG_TAG, "Could not get location")
         }
     }
 
@@ -187,19 +148,61 @@ class MapFragment : Fragment() {
         setUpMap()
     }
 
-    private fun setUpMap() {
-        mapFragment.getMapAsync {
-            with(it) {
-                enableLocationIfAllowed()
+    // Request Permissions
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == LOCATION_REQUEST_CODE && grantResults.isNotEmpty()
+            && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        ) {
+            mapFragment =
+                childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+            mapFragment.getMapAsync {
+                it.enableLocationIfAllowed()
                 getCurrentLocation { location ->
                     val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
                     it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
-                    getNearbyPlaces(location, this)
                 }
-                mMap = this
-                mapReady = true
-                addClickListenersToMarkers(this)
             }
+        }
+    }
+
+    private fun requestLocationPermissionIfNeeded() {
+        if (!isLocationPermissionGranted()) {
+            activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    arrayOf(FINE_LOCATION),
+                    LOCATION_REQUEST_CODE
+                )
+            }
+        }
+    }
+
+    private fun isLocationPermissionGranted(): Boolean =
+        context?.let {
+            ContextCompat.checkSelfPermission(
+                it,
+                FINE_LOCATION
+            )
+        } == PackageManager.PERMISSION_GRANTED
+
+    @SuppressLint("MissingPermission")
+    private fun GoogleMap.enableLocationIfAllowed() {
+        if (isLocationPermissionGranted()) {
+            isMyLocationEnabled = true
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getCurrentLocation(onSuccess: (Location) -> Unit) {
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            currentLocation = location
+            onSuccess(location)
+        }.addOnFailureListener {
+            Log.e(LOG_TAG, "Could not get location")
         }
     }
 
