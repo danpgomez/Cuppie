@@ -61,8 +61,6 @@ dependencies {
     // Maps and Location
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
-    // TODO: may not need this one in the end per codelab
-    implementation 'com.google.maps.android:maps-utils-ktx:1.7.0'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
