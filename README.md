@@ -1,7 +1,17 @@
 
 
 # Cuppie
-Hack week project with the goal of learning about the Google Maps and Google Places APIs. A coffee shop locator app that displays nearby cafe "places".
+A coffee shop locator app that displays nearby cafe "places". This was a Hack Week project with the goal of learning about:
+* The Google Maps and Google Places APIs
+* Firebase authentication with a custom UI
+* Requesting and handling user permissions
+
+## Improvements to be made
+* Better use of ViewModels
+* Saving and retrieving user favorites to/from Firebase
+* Cleaner implentation of permissions logic
+
+---
 
 ![cuppie_1](https://user-images.githubusercontent.com/6013282/122296122-0bb31980-cec8-11eb-942c-19daf6363287.jpg)
 ![cuppie_2](https://user-images.githubusercontent.com/6013282/122296127-0c4bb000-cec8-11eb-9e6e-f6c9192ed154.jpg)
