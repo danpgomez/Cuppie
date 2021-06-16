@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.e.cuppie.R
 import com.e.cuppie.databinding.FavoritesFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -112,7 +113,7 @@ class FavoritesFragment : Fragment() {
     private fun displayFavorites(user: FirebaseUser?) {
         with(binding) {
             textViewUserGreeting.text =
-                "Hello 👋! Here are your favorite places:"
+                getString(R.string.favorites_greeting)
             textViewUserGreeting.visibility = View.VISIBLE
             textViewFavorites0.visibility = View.VISIBLE
             textViewFavorites1.visibility = View.VISIBLE
