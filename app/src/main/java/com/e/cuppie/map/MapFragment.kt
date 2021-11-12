@@ -87,7 +87,7 @@ class MapFragment : Fragment() {
     }
 
     private fun getNearbyPlaces(location: Location, map: GoogleMap) {
-        placesService.nearbyPlaces(
+        placesService.getNearbyPlaces(
             apiKey = BuildConfig.API_KEY,
             location = "${location.latitude}, ${location.longitude}",
             radiusInMeters = 2000,

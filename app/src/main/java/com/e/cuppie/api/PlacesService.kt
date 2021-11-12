@@ -9,8 +9,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface PlacesService {
+
     @GET("nearbysearch/json")
-    fun nearbyPlaces(
+    fun getNearbyPlaces(
         @Query("key") apiKey: String,
         @Query("location") location: String,
         @Query("radius") radiusInMeters: Int,
@@ -23,16 +24,20 @@ interface PlacesService {
         fun create(): PlacesService {
             val logger = HttpLoggingInterceptor()
             logger.level = HttpLoggingInterceptor.Level.BODY
+
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(logger)
                 .build()
+
             val converterFactory = GsonConverterFactory.create()
-            val retrofit = Retrofit.Builder()
+
+            val retrofitInstance = Retrofit.Builder()
                 .baseUrl(ROOT_URL)
                 .client(okHttpClient)
                 .addConverterFactory(converterFactory)
                 .build()
-            return retrofit.create(PlacesService::class.java)
+
+            return retrofitInstance.create(PlacesService::class.java)
         }
     }
 }
