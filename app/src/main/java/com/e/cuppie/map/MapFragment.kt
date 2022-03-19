@@ -149,36 +149,11 @@ class MapFragment : Fragment() {
     }
 
     // Request Permissions
-    private fun isLocationPermissionGranted(): Boolean =
-        context?.let {
-            ContextCompat.checkSelfPermission(
-                it,
-                FINE_LOCATION
-            )
-        } == PackageManager.PERMISSION_GRANTED
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == LOCATION_REQUEST_CODE && grantResults.isNotEmpty()
-            && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        ) {
-            mapFragment =
-                childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
-            mapFragment.getMapAsync {
-                it.enableLocationIfAllowed()
-                getCurrentLocation { location ->
-                    val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
-                    it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
-                }
-            }
-        }
-    }
+    private fun hasFineLocationPermission(): Boolean =
+        context?.let { ContextCompat.checkSelfPermission(it, FINE_LOCATION) } == PackageManager.PERMISSION_GRANTED
 
     private fun requestLocationPermissionIfNeeded() {
-        if (!isLocationPermissionGranted()) {
+        if (!hasFineLocationPermission()) {
             activity?.let {
                 ActivityCompat.requestPermissions(
                     it,
@@ -189,14 +164,37 @@ class MapFragment : Fragment() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == LOCATION_REQUEST_CODE && grantResults.isNotEmpty()
+            && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        ) {
+            moveMapCameraToLocation()
+        }
+    }
+
+    private fun moveMapCameraToLocation() {
+        mapFragment =
+            childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapFragment.getMapAsync {
+            it.enableLocationIfAllowed()
+            getCurrentLocation { location ->
+                val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
+                it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
+            }
+        }
+    }
+
     @SuppressLint("MissingPermission")
     private fun GoogleMap.enableLocationIfAllowed() {
-        if (isLocationPermissionGranted()) {
+        if (hasFineLocationPermission()) {
             isMyLocationEnabled = true
         }
     }
 
-    // OLD Method
     @SuppressLint("MissingPermission")
     private fun getCurrentLocation(onSuccess: (Location) -> Unit) {
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
@@ -207,7 +205,6 @@ class MapFragment : Fragment() {
         }
     }
 
-    // End of permissions code
     companion object {
         private val LOG_TAG = this::class.java.simpleName
         private const val ZOOM_LEVEL = 13F
