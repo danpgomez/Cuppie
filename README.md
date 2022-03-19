@@ -9,7 +9,7 @@ A coffee shop locator app that displays nearby cafe "places". This was a Hack We
 ## Improvements to be made
 * Better use of ViewModels
 * Saving and retrieving user favorites to/from Firebase
-* Cleaner implentation of permissions logic
+* Cleaner implementation of permissions logic
 
 ---
 
