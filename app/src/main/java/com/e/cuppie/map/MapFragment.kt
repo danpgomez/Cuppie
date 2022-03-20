@@ -31,8 +31,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MapFragment : Fragment() {
-    private var mapReady = false
-    private lateinit var mMap: GoogleMap
     private var places: List<Place>? = null
     private var currentLocation: Location? = null
     private lateinit var placesService: PlacesService
@@ -53,6 +51,7 @@ class MapFragment : Fragment() {
 
         setUpMap()
         setHasOptionsMenu(true)
+
         return rootView
     }
 
@@ -79,8 +78,6 @@ class MapFragment : Fragment() {
                     it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
                     getNearbyPlaces(location, this)
                 }
-                mMap = this
-                mapReady = true
                 addClickListenersToMarkers(this)
             }
         }
@@ -114,24 +111,26 @@ class MapFragment : Fragment() {
     }
 
     private fun addPlacesToMap(googleMap: GoogleMap) {
-        if (currentLocation == null) {
-            Log.e(LOG_TAG, "Location has not been determined yet")
-        }
+        if (currentLocation == null) Log.e(LOG_TAG, "Location has not been determined yet")
 
-        val placesList = places
-        placesList?.let { list ->
+        places?.let { list ->
             for (place in list) {
-                googleMap.let { map ->
-                    val marker = map.addMarker(
-                        MarkerOptions()
-                            .position(place.geometry.location.latLng)
-                            .title(place.name)
-                    )
-                    marker?.tag = place
-                    marker?.let { markers.add(it) }
-                }
+                createMarker(googleMap, place)
             }
         }
+    }
+
+    private fun createMarker(
+        map: GoogleMap,
+        place: Place
+    ) {
+        val marker = map.addMarker(
+            MarkerOptions()
+                .position(place.geometry.location.latLng)
+                .title(place.name)
+        )
+        marker?.tag = place
+        marker?.let { markers.add(it) }
     }
 
     private fun addClickListenersToMarkers(googleMap: GoogleMap) {
@@ -169,16 +168,17 @@ class MapFragment : Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == LOCATION_REQUEST_CODE && grantResults.isNotEmpty()
-            && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        ) {
+        val permissionIsGranted = (
+                requestCode == LOCATION_REQUEST_CODE && grantResults.isNotEmpty()
+                && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                )
+
+        if (permissionIsGranted) {
             moveMapCameraToLocation()
         }
     }
 
     private fun moveMapCameraToLocation() {
-        mapFragment =
-            childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync {
             it.enableLocationIfAllowed()
             getCurrentLocation { location ->
