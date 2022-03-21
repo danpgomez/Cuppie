@@ -17,6 +17,7 @@ import com.e.cuppie.R
 import com.e.cuppie.api.NearbyPlacesResponse
 import com.e.cuppie.api.PlacesService
 import com.e.cuppie.model.Place
+import com.e.cuppie.permissions.PermissionManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -115,12 +116,12 @@ class MapFragment : Fragment() {
 
         places?.let { list ->
             for (place in list) {
-                createMarker(googleMap, place)
+                createPlaceMarker(googleMap, place)
             }
         }
     }
 
-    private fun createMarker(
+    private fun createPlaceMarker(
         map: GoogleMap,
         place: Place
     ) {
