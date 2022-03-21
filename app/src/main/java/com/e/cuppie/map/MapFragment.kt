@@ -34,6 +34,8 @@ import retrofit2.Response
 class MapFragment : Fragment() {
     private var places: List<Place>? = null
     private var currentLocation: Location? = null
+    private var locationPermissionGranted: Boolean = false
+    private lateinit var permissionManager: PermissionManager
     private lateinit var placesService: PlacesService
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -46,6 +48,8 @@ class MapFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
         mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
 
+        permissionManager = PermissionManager(this)
+        locationPermissionGranted = permissionManager.getLocationPermissionFromUser()
         requestLocationPermissionIfNeeded()
         placesService = PlacesService.create()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
