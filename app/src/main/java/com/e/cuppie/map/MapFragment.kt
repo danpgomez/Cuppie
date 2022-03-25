@@ -70,20 +70,18 @@ class MapFragment : Fragment() {
 
     // Map configuration
     private fun setUpMap() {
-        mapFragment.getMapAsync {
-            with(it) {
-                enableLocationIfAllowed()
-                getCurrentLocation { location ->
-                    val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
-                    it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
-                    getNearbyPlaces(location, this)
-                }
-                addClickListenersToMarkers(this)
+        mapFragment.getMapAsync { map ->
+            map.enableLocationIfAllowed()
+            getCurrentLocation { location ->
+                val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
+                map.moveCamera(CameraUpdateFactory.newCameraPosition(position))
+                getNearbyCafes(location, map)
+                addClickListenersToMarkers(map)
             }
         }
     }
 
-    private fun getNearbyPlaces(location: Location, map: GoogleMap) {
+    private fun getNearbyCafes(location: Location, map: GoogleMap) {
         placesService.getNearbyPlaces(
             apiKey = BuildConfig.API_KEY,
             location = "${location.latitude}, ${location.longitude}",
@@ -91,6 +89,7 @@ class MapFragment : Fragment() {
             placeType = getString(R.string.cafe_place_type)
         ).enqueue(
             object : Callback<NearbyPlacesResponse> {
+
                 override fun onFailure(call: Call<NearbyPlacesResponse>, t: Throwable) {
                     Log.e(LOG_TAG, getString(R.string.error_failed_to_get_places), t)
                 }
@@ -102,6 +101,7 @@ class MapFragment : Fragment() {
                     if (!response.isSuccessful) {
                         Log.e(LOG_TAG, getString(R.string.error_failed_to_get_places))
                     }
+
                     val nearbyPlaces = response.body()?.results ?: emptyList()
                     places = nearbyPlaces
                     addPlacesToMap(map)
@@ -149,7 +149,12 @@ class MapFragment : Fragment() {
 
     // Request Permissions
     private fun hasFineLocationPermission(): Boolean =
-        context?.let { ContextCompat.checkSelfPermission(it, FINE_LOCATION) } == PackageManager.PERMISSION_GRANTED
+        context?.let {
+            ContextCompat.checkSelfPermission(
+                it,
+                FINE_LOCATION
+            )
+        } == PackageManager.PERMISSION_GRANTED
 
     private fun requestLocationPermissionIfNeeded() {
         if (!hasFineLocationPermission()) {
@@ -170,21 +175,11 @@ class MapFragment : Fragment() {
     ) {
         val permissionIsGranted = (
                 requestCode == LOCATION_REQUEST_CODE && grantResults.isNotEmpty()
-                && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                        && (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 )
 
         if (permissionIsGranted) {
-            moveMapCameraToLocation()
-        }
-    }
-
-    private fun moveMapCameraToLocation() {
-        mapFragment.getMapAsync {
-            it.enableLocationIfAllowed()
-            getCurrentLocation { location ->
-                val position = CameraPosition.fromLatLngZoom(location.latLng, ZOOM_LEVEL)
-                it.moveCamera(CameraUpdateFactory.newCameraPosition(position))
-            }
+            setUpMap()
         }
     }
 
