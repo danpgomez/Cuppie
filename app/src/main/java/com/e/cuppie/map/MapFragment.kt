@@ -88,11 +88,11 @@ class MapFragment : Fragment() {
             apiKey = BuildConfig.API_KEY,
             location = "${location.latitude}, ${location.longitude}",
             radiusInMeters = 2000,
-            placeType = "cafe"
+            placeType = getString(R.string.cafe_place_type)
         ).enqueue(
             object : Callback<NearbyPlacesResponse> {
                 override fun onFailure(call: Call<NearbyPlacesResponse>, t: Throwable) {
-                    Log.e(LOG_TAG, "Failed to get nearby places", t)
+                    Log.e(LOG_TAG, getString(R.string.error_failed_to_get_places), t)
                 }
 
                 override fun onResponse(
@@ -100,7 +100,7 @@ class MapFragment : Fragment() {
                     response: Response<NearbyPlacesResponse>
                 ) {
                     if (!response.isSuccessful) {
-                        Log.e(LOG_TAG, "Failed to get nearby places")
+                        Log.e(LOG_TAG, getString(R.string.error_failed_to_get_places))
                     }
                     val nearbyPlaces = response.body()?.results ?: emptyList()
                     places = nearbyPlaces
@@ -111,7 +111,7 @@ class MapFragment : Fragment() {
     }
 
     private fun addPlacesToMap(googleMap: GoogleMap) {
-        if (currentLocation == null) Log.e(LOG_TAG, "Location has not been determined yet")
+        if (currentLocation == null) Log.e(LOG_TAG, getString(R.string.location_not_determined))
 
         places?.let { list ->
             for (place in list) {
@@ -201,7 +201,7 @@ class MapFragment : Fragment() {
             currentLocation = location
             onSuccess(location)
         }.addOnFailureListener {
-            Log.e(LOG_TAG, "Could not get location")
+            Log.e(LOG_TAG, getString(R.string.location_not_determined))
         }
     }
 

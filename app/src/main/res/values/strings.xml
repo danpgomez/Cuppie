@@ -19,4 +19,7 @@
     <string name="address_label">Address:</string>
     <string name="favorites_button">Favorites Button</string>
     <string name="favorites_greeting">Hello 👋! Here are your favorite places:</string>
+    <string name="cafe_place_type">cafe</string>
+    <string name="error_failed_to_get_places">Failed to get nearby places</string>
+    <string name="location_not_determined">Location has not been determined yet</string>
 </resources>
